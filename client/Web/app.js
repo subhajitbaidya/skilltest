@@ -1,22 +1,36 @@
-let roles = ["Web designer", "Musician", "Critical Thinker"];
-let index = 0;
+let intervalTime = 10; // Starting speed
+let interval; // Store interval reference for later clearing
 
-function changeHTML() {
-  document.getElementsByTagName("h1")[0].innerHTML = "I am Subhajit Baidya";
+window.onload = startBouncingAnimation();
+function startBouncingAnimation() {
+  const output = document.getElementById("output");
+  const circle = document.getElementById("circle");
 
-  let item = document
-    .getElementById("output")
-    .getElementsByTagName("p")[0]
-    .getElementsByTagName("span")[0];
+  const maxX = output.clientWidth - circle.offsetWidth;
+  const maxY = output.clientHeight - circle.offsetHeight;
 
-  item.innerHTML = roles[index];
-  index = (index + 1) % roles.length;
+  let posX = Math.floor(Math.random() * maxX);
+  let posY = Math.floor(Math.random() * maxY);
+  let dx = 2;
+  let dy = 2;
 
-  let newElement = document.createElement("p");
-  document.getElementsByTagName("button")[0].onclick = () => {
-    newElement.textContent = "Learn and grow";
-  };
-  item.appendChild(newElement);
+  interval = setInterval(() => {
+    posX += dx;
+    posY += dy;
+
+    // Bounce on left/right
+    if (posX >= maxX || posX <= 0) dx = -dx;
+    // Bounce on top/bottom
+    if (posY >= maxY || posY <= 0) dy = -dy;
+
+    circle.style.left = `${posX}px`;
+    circle.style.top = `${posY}px`;
+  }, intervalTime); // dynamic speed
 }
 
-setInterval(changeHTML, 3000);
+// document.getElementById("start").addEventListener("click", () => {
+//   // Increase speed: decrease interval time (faster)
+//   intervalTime = 5; // Speed up the animation
+//   clearInterval(interval); // Clear the previous interval if there's any
+//   startBouncingAnimation(); // Restart the animation with new speed
+// });
