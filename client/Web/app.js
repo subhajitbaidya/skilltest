@@ -1,12 +1,22 @@
-function addNumbers() {
-  let a = 10;
-  let b = 20;
+let roles = ["Web designer", "Musician", "Critical Thinker"];
+let index = 0;
 
-  let add = (a, b) => {
-    return a + b;
+function changeHTML() {
+  document.getElementsByTagName("h1")[0].innerHTML = "I am Subhajit Baidya";
+
+  let item = document
+    .getElementById("output")
+    .getElementsByTagName("p")[0]
+    .getElementsByTagName("span")[0];
+
+  item.innerHTML = roles[index];
+  index = (index + 1) % roles.length;
+
+  let newElement = document.createElement("p");
+  document.getElementsByTagName("button")[0].onclick = () => {
+    newElement.textContent = "Learn and grow";
   };
-
-  return add(a, b);
+  item.appendChild(newElement);
 }
 
-document.getElementById("output").innerHTML = addNumbers();
+setInterval(changeHTML, 3000);
