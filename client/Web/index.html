@@ -4,22 +4,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Playground</title>
+  <title>Account Form</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-  <div id="output">
-    <div id="circle"></div>
-  </div>
 
-  <!-- <button id="start" style="font-weight: 600;">Click Me</button> -->
+  <form name="myform" action="./form.html" onsubmit="return validateForm()">
 
+    <h1>Account form</h1>
 
+    username: <input type="text" placeholder="Enter your name" name="uname">
+    <label id="unamelabel" style="color: red; visibility: hidden;">Username should be minimum 6 characters long </label><br><br>
 
+    age: <input type="number" name="age" required>
+    <br><br>
 
-  <script type="module" src="app.js"></script>
+    residency: <input type="radio" name="residency" value="resident" checked>resident
+    <input type="radio" name="residency" value="nonresident">non-Resident
+
+    <br><br>
+
+    account: <input type="radio" name="acctype" value="savings" checked>aadhar
+    <input type="radio" name="acctype" value="Current">pan
+
+    <br><br>
+
+    Nationality: <select id="nationality">
+      <option value="1">Indian</option>
+      <option value="2">American</option>
+      <option value="3">African</option>
+      <option value="4">Australian</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Submit</button>
+    <button type="reset">Reset</button>
+
+    <br><br>
+
+  </form>
+
+  <script src="app.js"></script>
 
 </body>
 

@@ -1,36 +1,43 @@
-let intervalTime = 10; // Starting speed
-let interval; // Store interval reference for later clearing
+function validateForm() {
+  let uname = document.forms["myform"]["uname"];
+  let unameValue = uname.value.trim();
+  let age = document.forms["myform"]["age"].value;
 
-window.onload = startBouncingAnimation();
-function startBouncingAnimation() {
-  const output = document.getElementById("output");
-  const circle = document.getElementById("circle");
+  let acctype = document.querySelectorAll("input[name=docs]:checked");
 
-  const maxX = output.clientWidth - circle.offsetWidth;
-  const maxY = output.clientHeight - circle.offsetHeight;
+  let regName = /^[a-zA-Z]+$/;
 
-  let posX = Math.floor(Math.random() * maxX);
-  let posY = Math.floor(Math.random() * maxY);
-  let dx = 2;
-  let dy = 2;
+  if (unameValue.length < 6) {
+    alert("Must be at least 6 letters long");
+    uname.focus();
+    return false;
+  }
 
-  interval = setInterval(() => {
-    posX += dx;
-    posY += dy;
+  if (!regName.test(unameValue)) {
+    uname.style.border = "solid 2px red";
+    document.getElementById("unamelabel").innerHTML =
+      "Name can only have alphabets";
+    document.getElementById("unamelabel").style.color = "red";
+    document.getElementById("unamelabel").style.visibility = "visible";
+    uname.focus();
+    return false;
+  } else {
+    uname.style.border = "solid 2px green";
+    document.getElementById("unamelabel").innerHTML = "Username valid!";
+    document.getElementById("unamelabel").style.color = "green";
+    document.getElementById("unamelabel").style.visibility = "visible";
+  }
 
-    // Bounce on left/right
-    if (posX >= maxX || posX <= 0) dx = -dx;
-    // Bounce on top/bottom
-    if (posY >= maxY || posY <= 0) dy = -dy;
+  if (age < 18) {
+    alert("Age should be above 18");
+    return false;
+  }
 
-    circle.style.left = `${posX}px`;
-    circle.style.top = `${posY}px`;
-  }, intervalTime); // dynamic speed
+  if (acctype.length === 0) {
+    // fallback, though one is checked by default
+    document.querySelectorAll("input[name=docs]")[1].checked = true;
+  }
+
+  confirm("Do you want to submit?");
+  return true;
 }
-
-// document.getElementById("start").addEventListener("click", () => {
-//   // Increase speed: decrease interval time (faster)
-//   intervalTime = 5; // Speed up the animation
-//   clearInterval(interval); // Clear the previous interval if there's any
-//   startBouncingAnimation(); // Restart the animation with new speed
-// });

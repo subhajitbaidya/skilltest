@@ -1,6 +1,6 @@
 * {
   box-sizing: border-box;
-  background: black;
+  background: transparent;
 }
 
 body {
@@ -12,86 +12,119 @@ body {
 }
 
 #output {
-  background: black;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  perspective: 1000px; /* gives a 3D depth */
-  justify-content: center;
+  height: 200px;
   position: relative;
-  min-height: 50vh;
-  min-width: 300px;
-  margin: 20vh;
-  padding: 20px 40px;
-  font-size: 20px;
-  border: 6px solid transparent;
-  border-image: linear-gradient(45deg, #ff6ec4, #7873f5, #4ade80, #facc15);
-  border-image-slice: 1;
-  background-clip: padding-box;
-  z-index: 1;
-  overflow: hidden;
-}
-#circle {
-  bottom: 100px;
-  width: 50px;
-  height: 50px;
-  position: absolute;
   transform-style: preserve-3d;
-  background: linear-gradient(to bottom right, red, yellow);
-  border-radius: 50px;
+  transform: rotateX(-20deg) rotateY(30deg);
+  z-index: 1;
+  animation: rotateCuboid 10s linear infinite;
 }
 
+#output img {
+  width: 100%;
+  height: auto;
+}
+
+.face {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Transparent front & back */
+.front {
+  transform: translateZ(100px);
+  background: transparent;
+}
+
+.back {
+  transform: rotateY(180deg) translateZ(100px);
+  background: transparent;
+}
+
+/* Top & Bottom */
+.top,
+.bottom {
+  width: 300px;
+  height: 200px;
+  transform-origin: center;
+}
+
+.top {
+  transform: rotateX(90deg) translateZ(100px);
+  background: #4ade80;
+}
+
+.bottom {
+  transform: rotateX(-90deg) translateZ(100px);
+  background: #ff6ec4;
+}
+
+/* Left & Right */
+.left,
+.right {
+  width: 200px;
+  height: 200px;
+  transform-origin: center;
+}
+
+.left {
+  transform: rotateY(90deg) translateZ(150px);
+  background: #facc15;
+  left: -50px;
+}
+
+.right {
+  transform: rotateY(-90deg) translateZ(150px);
+  background: #7873f5;
+  right: -50px;
+}
+
+/* Circle bounce */
+#circle {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  position: absolute;
+  background: linear-gradient(to bottom right, red, yellow);
+  animation: bounce 2s ease-in-out infinite alternate;
+}
+
+/* Optional glow effect */
 #output::before {
   content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  transform-style: preserve-3d;
-  background: conic-gradient(
-    from 0deg,
-    #ff6ec4,
-    #7873f5,
-    #4ade80,
-    #facc15,
-    #ff6ec4
+  /* width: 100%;
+  height: 100%; */
+  top: 0;
+  left: 0;
+  border-radius: 20%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 110, 196, 0.2),
+    rgba(72, 115, 245, 0.2),
+    rgba(74, 222, 128, 0.2),
+    rgba(250, 204, 21, 0.2)
   );
-  animation: rotateBorder 1s linear infinite;
   z-index: -1;
-  filter: blur(30px);
-}
-
-#output::after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  right: 2px;
-  bottom: 2px;
-
-  background-color: black;
-  z-index: -1;
-  border-radius: 8px;
-  transform-style: preserve-3d;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  transition: transform 0.6s ease, box-shadow 0.4s ease;
-}
-
-p {
-  transition-duration: 2ms inherit;
+  animation: rotateBorder 4s linear infinite;
+  filter: blur(20px);
 }
 
 button {
-  height: 2.5rem;
-  width: 8rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid transparent;
-  background-color: bisque;
-  font-size: medium;
-  font-weight: 400;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #4ade80;
+  color: black;
+  border: 2px solid black;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin: 10px;
 }
 
+/* Keyframes */
 @keyframes rotateBorder {
   0% {
     transform: rotate(0deg);
@@ -99,4 +132,49 @@ button {
   100% {
     transform: rotate(360deg);
   }
+}
+
+@keyframes rotateCuboid {
+  0% {
+    transform: rotateX(-20deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(-20deg) rotateY(360deg);
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(50px, -30px, 50px);
+  }
+}
+
+@keyframes rotateSVG {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg);
+  }
+}
+.tuning-keys {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100vh;
+  padding: 1rem;
+  position: fixed;
+}
+
+.tuning-keys.left {
+  left: 0;
+  align-items: flex-start;
+}
+
+.tuning-keys.right {
+  right: 0;
+  align-items: flex-end;
 }
